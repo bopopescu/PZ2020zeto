@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'teamone',
     'rest_framework',
 ]
 
@@ -77,7 +78,7 @@ WSGI_APPLICATION = 'projektZesp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'HOST': 'bad.uwm.edu.pl',
+        'HOST': '213.184.8.199',
         'PORT': '3306',
         'NAME': 'strenkowskip',
         'USER': 'strenkowskip',
