@@ -1,10 +1,12 @@
 from django.db import models
 
+
 class Schronisko(models.Model):
     login = models.CharField(max_length=30)
     haslo = models.CharField(max_length=30)
     telefon = models.CharField(max_length=15)
     adres = models.CharField(max_length=30)
+
 
 class Zwierze(models.Model):
     schroniskoID = models.ForeignKey(Schronisko, on_delete=models.CASCADE)
