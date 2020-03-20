@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name ='index'),
     path('zwierzaki', views.ZwierzetaLista.as_view()),
+    path('zwierzaki/<int:pk>', views.ZwierzetaDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
