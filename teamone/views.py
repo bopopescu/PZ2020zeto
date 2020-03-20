@@ -35,10 +35,10 @@ class ZwierzetaDetail(generics.RetrieveAPIView):
     def get(self, request, pk):
         zwierzak = Zwierze.objects.filter(id=pk)
         serializer = ZwierzeSeralizer(zwierzak, many=True)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data, safe = False)
 
 
-//Mój pomysł na filtry AP
+#Mój pomysł na filtry AP
 class Filtry(generics.RetrieveAPIView):
     queryset = Zwierze.objects.all()
     serializerClass = ZwierzeSeralizer
