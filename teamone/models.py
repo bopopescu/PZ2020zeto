@@ -10,6 +10,7 @@ class Schronisko(models.Model):
 class Uzytkownik(models.Model):
     login = models.CharField(max_length=30)
     haslo = models.CharField(max_length=30)
+    lajk = models.BooleanField()
 
 class Zwierze(models.Model):
     schroniskoID = models.ForeignKey(Schronisko, on_delete=models.CASCADE)
