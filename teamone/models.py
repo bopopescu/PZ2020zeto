@@ -19,7 +19,9 @@ class Zwierze(models.Model):
     zdjecie = models.CharField(max_length=50)
     opis = models.CharField(max_length=200)
     czyDuzeMieszkanie = models.BooleanField()
+    #czyMaleMieszkanie = models.BooleanField()
     czyDuzoCzasu = models.BooleanField()
+    #czyMaloCzasu = models.BooleanField()
     czyDzieci = models.BooleanField()
 
 class Lista(models.Model):

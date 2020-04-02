@@ -38,12 +38,14 @@ class ZwierzetaDetail(generics.RetrieveAPIView):
         return JsonResponse(serializer.data, safe = False)
 
 
-#Mój pomysł na filtry AP
-class Filtry(generics.RetrieveAPIView):
+class ZwierzetaFiltry(generics.ListAPIView):
     queryset = Zwierze.objects.all()
-    serializerClass = ZwierzeSeralizer
+    serializer_class = ZwierzeSeralizer
 
-    def get(self, czyDuzeMieszkanie, czyMaleMieszkanie, czyDuzoCzasu, czyMaloCzasu, czyDzieci):
-        zwierzak = Zwierze.objects.filter(czyDuzeMieszkanie=czyDuzeMieszkanie, czyMaleMieszkanie=czyMaleMieszkanie, czyDuzoCzasu=czyDuzoCzasu, czyMaloCzasu=czyMaloCzasu, czyDzieci=czyDzieci)
-        serializer = ZwierzeSeralizer(zwierzak, many=True)
-        return Response(serializer.data)
+    def get(self, request, filtr):
+        if(filtr[0] == '1'):
+            lista = Zwierze.objects.filter(czyDuzeMieszkanie=filtr[1], czyDuzoCzasu=filtr[2], czyDzieci=filtr[3])
+        else:
+            lista = Zwierze.objects.all()
+        serializer = ZwierzeSeralizer(lista, many = True)
+        return JsonResponse(serializer.data, safe = False)
