@@ -11,8 +11,9 @@ from .serializers import SchroniskoSeralizer, ZwierzeSeralizer
 from rest_framework.parsers import JSONParser
 from django.template import loader
 from django.contrib.auth.models import User
-# Create your views here.
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 def index(request):
     template = loader.get_template('index.html')
@@ -49,3 +50,4 @@ class ZwierzetaFiltry(generics.ListAPIView):
             lista = Zwierze.objects.all()
         serializer = ZwierzeSeralizer(lista, many = True)
         return JsonResponse(serializer.data, safe = False)
+
