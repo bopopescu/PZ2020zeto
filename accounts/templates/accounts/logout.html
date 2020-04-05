@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <h1>Wylogowywanie</h1>
+    <form action="/accounts/logout/" method="post">
+        {% csrf_token %}
+        <button type="submit">Potwierdz wylogowanie</button>
+    </form>
+{% endblock %}
