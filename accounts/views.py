@@ -23,7 +23,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect("77.55.237.205:8100/page/main")
+            return redirect("http://77.55.237.205:8100/page/main")
     else:
         form = AuthenticationForm()
     return render(request, "accounts/login.html", {"form":form})
@@ -31,4 +31,4 @@ def login_view(request):
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('accounts:login')
+        return redirect('http://77.55.237.205:8100/accounts/login/')
