@@ -31,4 +31,4 @@ def login_view(request):
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('http://77.55.237.205:8100/accounts/login/')
+        return redirect('http://77.55.237.205:8000/accounts/login/')
