@@ -82,7 +82,7 @@ def logout_view(request):
         logout(request)
         return redirect('http://77.55.237.205:8000/accounts/login/')
 
-class NameView(generics.ListAPIView):
+class NameView(generics.RetrieveAPIView):
     queryset = Zwierze.objects.all()
     serializer_class = UserSerializer
 
