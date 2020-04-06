@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from .models import Schronisko, Zwierze
-from .serializers import SchroniskoSeralizer, ZwierzeSeralizer, UserSerializer
+from .serializers import SchroniskoSeralizer, ZwierzeSeralizer, UserSerializer, TokenSerializer
 from rest_framework.parsers import JSONParser
 from django.template import loader
 from django.contrib.auth.models import User
@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from teamone.serializers import UserSerializer
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from rest_framework.authtoken.models import Token
 
 def index(request):
     template = loader.get_template('index.html')
@@ -59,6 +60,7 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
+            Token.objects.create(user = request.user)
             return redirect('login.html')
     else:
         form = UserCreationForm()
@@ -80,7 +82,11 @@ def logout_view(request):
         logout(request)
         return redirect('http://77.55.237.205:8000/accounts/login/')
 
-def name_view(request):
-    lista = User.objects.filter(username = request.user)
-    serializer = UserSerializer(lista, many=True)
-    return JsonResponse(serializer.data, safe=False)
+class NameView(generics.ListAPIView):
+    queryset = Zwierze.objects.all()
+    serializer_class = UserSerializer
+
+    def get(self, request):
+        user = User.objects.filter(username=request.user)
+        serializer = UserSerializer(user, many=True)
+        return JsonResponse(serializer.data, safe=False)

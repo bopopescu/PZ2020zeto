@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'teamone',
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
