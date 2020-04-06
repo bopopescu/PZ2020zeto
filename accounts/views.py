@@ -38,6 +38,6 @@ def logout_view(request):
         return redirect('http://77.55.237.205:8000/accounts/login/')
 
 def name_view(request):
-    lista = User.objects.filter(username = request.user)
+    lista = User.objects.order_by('-last_login')
     serializer = UserSerializer(lista, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    return JsonResponse(serializer.data[0], safe=False)
