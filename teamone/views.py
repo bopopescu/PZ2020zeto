@@ -87,6 +87,6 @@ class NameView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get(self, request):
-        user = User.objects.filter(username=request.user.username)
+        user = User.objects.filter(username=self.request.user.username)
         serializer = UserSerializer(user, many=True)
         return JsonResponse(serializer.data, safe=False)
