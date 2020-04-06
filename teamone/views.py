@@ -7,11 +7,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from .models import Schronisko, Zwierze
-from .serializers import SchroniskoSeralizer, ZwierzeSeralizer
+from .serializers import SchroniskoSeralizer, ZwierzeSeralizer, UserSerializer
 from rest_framework.parsers import JSONParser
 from django.template import loader
 from django.contrib.auth.models import User
-
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
+from teamone.serializers import UserSerializer
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
@@ -51,3 +54,33 @@ class ZwierzetaFiltry(generics.ListAPIView):
         serializer = ZwierzeSeralizer(lista, many = True)
         return JsonResponse(serializer.data, safe = False)
 
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login.html')
+    else:
+        form = UserCreationForm()
+    return render(request, "signup.html", {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect("http://77.55.237.205:8100/page/main")
+    else:
+        form = AuthenticationForm()
+    return render(request, "login.html", {"form" : form})
+
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('http://77.55.237.205:8000/accounts/login/')
+
+def name_view(request):
+    lista = User.objects.filter(username = request.user)
+    serializer = UserSerializer(lista, many=True)
+    return JsonResponse(serializer.data, safe=False)

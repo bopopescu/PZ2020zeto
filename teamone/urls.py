@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from . import views
+from teamone import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls import url
 
@@ -15,7 +15,10 @@ urlpatterns = [
     path('zwierzaki', views.ZwierzetaLista.as_view()),
     path('zwierzaki/<int:pk>', views.ZwierzetaDetail.as_view()),
     path('zfiltr/<str:filtr>', views.ZwierzetaFiltry.as_view()),
-    url(r'^accounts/', include('accounts.urls')),
+    url(r'^signup/$', views.signup_view, name="signup"),
+    url(r'^login/$', views.login_view, name="login"),
+    url(r'^logout/$', views.logout_view, name="logout"),
+    url(r'^name', views.name_view, name="name"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
