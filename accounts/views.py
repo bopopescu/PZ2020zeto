@@ -1,17 +1,21 @@
+from django.db.models import Max
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
-from teamone.models import Uzytkownik
+from django.contrib.auth.models import User
 
 # Create your views here.
+from django.utils.functional import SimpleLazyObject
+
+from teamone.serializers import UserSerializer
+
+
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password1"]
-            Uzytkownik.objects.create(login=username, haslo=password, lajk= 1)
             return redirect('accounts:login')
     else:
         form = UserCreationForm()
@@ -32,3 +36,8 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return redirect('http://77.55.237.205:8000/accounts/login/')
+
+def name_view(request):
+    lista = User.objects.filter(username = request.user)
+    serializer = UserSerializer(lista, many=True)
+    return JsonResponse(serializer.data, safe=False)
