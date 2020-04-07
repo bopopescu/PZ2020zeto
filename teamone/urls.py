@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^login/$', views.login_view, name="login"),
     url(r'^logout/$', views.logout_view, name="logout"),
     url(r'^name', views.NameView.as_view()),
+    url(r'^zwierzePost', views.ZwierzePost.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from .models import Schronisko, Zwierze
-from .serializers import SchroniskoSeralizer, ZwierzeSeralizer, UserSerializer, TokenSerializer
+from .serializers import SchroniskoSerializer, ZwierzeSerializer, UserSerializer, TokenSerializer
 from rest_framework.parsers import JSONParser
 from django.template import loader
 from django.contrib.auth.models import User
@@ -26,33 +26,33 @@ def index(request):
 
 class ZwierzetaLista(generics.ListAPIView):
     queryset = Zwierze.objects.all()
-    serializerClass = ZwierzeSeralizer
+    serializerClass = ZwierzeSerializer
 
     def get(self, request):
         zw = Zwierze.objects.all()
-        serializer = ZwierzeSeralizer(zw, many = True)
+        serializer = ZwierzeSerializer(zw, many = True)
         return JsonResponse(serializer.data, safe = False)
 
 class ZwierzetaDetail(generics.RetrieveAPIView):
     queryset = Zwierze.objects.all()
-    serializerClass = ZwierzeSeralizer
+    serializerClass = ZwierzeSerializer
 
     def get(self, request, pk):
         zwierzak = Zwierze.objects.filter(id=pk)
-        serializer = ZwierzeSeralizer(zwierzak, many=True)
+        serializer = ZwierzeSerializer(zwierzak, many=True)
         return JsonResponse(serializer.data, safe = False)
 
 
 class ZwierzetaFiltry(generics.ListAPIView):
     queryset = Zwierze.objects.all()
-    serializer_class = ZwierzeSeralizer
+    serializer_class = ZwierzeSerializer
 
     def get(self, request, filtr):
         if(filtr[0] == '1'):
             lista = Zwierze.objects.filter(czyDuzeMieszkanie=filtr[1], czyDuzoCzasu=filtr[2], czyDzieci=filtr[3])
         else:
             lista = Zwierze.objects.all()
-        serializer = ZwierzeSeralizer(lista, many = True)
+        serializer = ZwierzeSerializer(lista, many = True)
         return JsonResponse(serializer.data, safe = False)
 
 def signup_view(request):
@@ -90,3 +90,9 @@ class NameView(generics.RetrieveAPIView):
         user = User.objects.filter(username=self.request.user.get_username())
         serializer = UserSerializer(user, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+class ZwierzePost(generics.ListCreateAPIView):
+    queryset = Zwierze.objects.all()
+    serializer_class = ZwierzeSerializer
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
