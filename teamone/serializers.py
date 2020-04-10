@@ -15,6 +15,9 @@ class ZwierzeSerializer(serializers.ModelSerializer):
         model = Zwierze
         fields = '__all__'
 
+    def create(self, validated_data):
+        return Zwierze.objects.create(**validated_data)
+
 class ListaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lista

@@ -95,4 +95,4 @@ class ZwierzePost(generics.ListCreateAPIView):
     queryset = Zwierze.objects.all()
     serializer_class = ZwierzeSerializer
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save()
