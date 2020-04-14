@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
-from .models import Schronisko, Zwierze
-from .serializers import SchroniskoSerializer, ZwierzeSerializer, UserSerializer, TokenSerializer
+from .models import Schronisko, Zwierze, Preferencje
+from .serializers import SchroniskoSerializer, ZwierzeSerializer, UserSerializer, PreferencjeSerializer
 from rest_framework.parsers import JSONParser
 from django.template import loader
 from django.contrib.auth.models import User
@@ -17,7 +18,6 @@ from django.contrib.auth.models import User
 from teamone.serializers import UserSerializer
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from rest_framework.authtoken.models import Token
 
 def index(request):
     template = loader.get_template('index.html')
@@ -55,17 +55,18 @@ class ZwierzetaFiltry(generics.ListAPIView):
         serializer = ZwierzeSerializer(lista, many = True)
         return JsonResponse(serializer.data, safe = False)
 
+@csrf_exempt
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            Token.objects.create(user = request.user)
-            return redirect('login.html')
+            return redirect('http://77.55.237.205:8000/login/')
     else:
         form = UserCreationForm()
     return render(request, "signup.html", {'form': form})
 
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -77,10 +78,11 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, "login.html", {"form" : form})
 
+@csrf_exempt
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('http://77.55.237.205:8000/accounts/login/')
+        return redirect('http://77.55.237.205:8000/login/')
 
 class NameView(generics.RetrieveAPIView):
     queryset = Zwierze.objects.all()
@@ -96,3 +98,9 @@ class ZwierzePost(generics.ListCreateAPIView):
     serializer_class = ZwierzeSerializer
     def perform_create(self, serializer):
         serializer.save()
+
+class PreferencjePost(generics.RetrieveUpdateAPIView):
+    queryset = Preferencje.objects.all()
+    serializer_class = PreferencjeSerializer
+
+

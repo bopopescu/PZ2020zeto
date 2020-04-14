@@ -56,6 +56,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = (
 'x-requested-with',

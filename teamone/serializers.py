@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from .models import Schronisko, Zwierze, Lista
+from .models import Schronisko, Zwierze, Lista, Preferencje
 from django.contrib.auth.models import User
 
 
@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username']
 
-class TokenSerializer(serializers.ModelSerializer):
+class PreferencjeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Token
-        fields = ['user_id']
+        model = Preferencje
+        fields = ['czyDuzeMieszkanie', 'czyDuzoCzasu', 'czyDzieci']
