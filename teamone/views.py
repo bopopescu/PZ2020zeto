@@ -111,8 +111,3 @@ class PreferencjeGet(generics.RetrieveAPIView):
 class PreferencjePut(generics.UpdateAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjeSerializer
-
-    def put(self, request, pk):
-        preferencje = Preferencje.objects.filter(id=pk)
-        serializer = PreferencjeSerializer(preferencje, many=True)
-        return Response(serializer.data)
