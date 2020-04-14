@@ -103,4 +103,9 @@ class PreferencjePost(generics.RetrieveUpdateAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjeSerializer
 
+    def get(self, request, pk):
+        preferencje = Preferencje.objects.filter(id=pk)
+        serializer = PreferencjeSerializer(preferencje, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
 
