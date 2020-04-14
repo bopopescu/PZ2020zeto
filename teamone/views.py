@@ -99,7 +99,7 @@ class ZwierzePost(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save()
 
-class PreferencjePost(generics.RetrieveUpdateAPIView):
+class PreferencjeGet(generics.RetrieveUpdateAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjeSerializer
 
@@ -107,5 +107,6 @@ class PreferencjePost(generics.RetrieveUpdateAPIView):
         preferencje = Preferencje.objects.filter(id=pk)
         serializer = PreferencjeSerializer(preferencje, many=True)
         return JsonResponse(serializer.data, safe=False)
+
 
 
