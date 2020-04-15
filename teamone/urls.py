@@ -15,11 +15,11 @@ urlpatterns = [
     path('zwierzaki', views.ZwierzetaLista.as_view()),
     path('zwierzaki/<int:pk>', views.ZwierzetaDetail.as_view()),
     path('zfiltr/<str:filtr>', views.ZwierzetaFiltry.as_view()),
-    url(r'^signup/$', views.signup_view, name="signup"),
-    url(r'^login/$', views.login_view, name="login"),
-    url(r'^logout/$', views.logout_view, name="logout"),
-    url(r'^name', views.NameView.as_view()),
-    url(r'^zwierzePost', views.ZwierzePost.as_view()),
+    #url(r'^signup/$', views.signup_view, name="signup"),
+    #url(r'^login/$', views.login_view, name="login"),
+    #url(r'^logout/$', views.logout_view, name="logout"),
+    path('name', views.NameView.as_view()),
+    path('zwierzePost', views.ZwierzePost.as_view()),
     path('PreferencjeGet/<int:pk>', views.PreferencjeGet.as_view()),
     path('PreferencjePut/<int:pk>', views.PreferencjePut.as_view())
 ]

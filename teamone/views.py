@@ -1,15 +1,12 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
-from .models import Schronisko, Zwierze, Preferencje
-from .serializers import SchroniskoSerializer, ZwierzeSerializer, UserSerializer, PreferencjeSerializer
-from rest_framework.parsers import JSONParser
+from .models import  Zwierze, Preferencje
+from .serializers import  ZwierzeSerializer, PreferencjeSerializer
 from django.template import loader
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
@@ -55,6 +52,7 @@ class ZwierzetaFiltry(generics.ListAPIView):
         serializer = ZwierzeSerializer(lista, many = True)
         return JsonResponse(serializer.data, safe = False)
 
+"""
 @csrf_exempt
 def signup_view(request):
     if request.method == 'POST':
@@ -83,6 +81,7 @@ def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return redirect('http://77.55.237.205:8000/login/')
+"""
 
 class NameView(generics.RetrieveAPIView):
     queryset = Zwierze.objects.all()
