@@ -24,7 +24,7 @@ class Lista(models.Model):
     zwierzeID = models.ForeignKey(Zwierze, on_delete=models.CASCADE)
 
 class Preferencje(models.Model):
-    token_user = models.ForeignKey(Token, on_delete=models.CASCADE, default=1)
+    token_user = models.ForeignKey(Token, on_delete=models.CASCADE)
     czyDuzeMieszkanie = models.BooleanField()
     czyDuzoCzasu = models.BooleanField()
     czyDzieci = models.BooleanField()
