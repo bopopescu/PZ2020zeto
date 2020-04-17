@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
@@ -103,7 +103,7 @@ class PreferencjeGet(generics.RetrieveAPIView):
     serializer_class = PreferencjeSerializer
 
     def get(self, request, token):
-        preferencje = Preferencje.objects.filter(token_user_id=token)
+        preferencje = Preferencje.objects.filter(token_user=token)
         serializer = PreferencjeSerializer(preferencje, many=True)
         return JsonResponse(serializer.data, safe=False)
 
