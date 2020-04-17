@@ -32,3 +32,8 @@ class PreferencjeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Preferencje
         fields = ['czyDuzeMieszkanie', 'czyDuzoCzasu', 'czyDzieci']
+
+class PreferencjePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Preferencje
+        fields = '__all__'

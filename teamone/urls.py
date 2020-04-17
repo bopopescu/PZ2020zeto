@@ -20,8 +20,9 @@ urlpatterns = [
     #url(r'^logout/$', views.logout_view, name="logout"),
     path('name', views.NameView.as_view()),
     path('zwierzePost', views.ZwierzePost.as_view()),
-    path('PreferencjeGet/<int:pk>', views.PreferencjeGet.as_view()),
-    path('PreferencjePut/<int:pk>', views.PreferencjePut.as_view())
+    path('PreferencjeGet/<str:token>', views.PreferencjeGet.as_view()),
+    path('PreferencjePut/<str:token>', views.PreferencjePut.as_view()),
+    path('PreferencjePost', views.PreferencjePost.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

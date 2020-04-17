@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from .models import  Zwierze, Preferencje
-from .serializers import  ZwierzeSerializer, PreferencjeSerializer
+from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer
 from django.template import loader
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
@@ -95,18 +95,25 @@ class NameView(generics.RetrieveAPIView):
 class ZwierzePost(generics.ListCreateAPIView):
     queryset = Zwierze.objects.all()
     serializer_class = ZwierzeSerializer
-    def perform_create(self, serializer):
-        serializer.save()
+    def perform_create(self, serializer_class):
+        serializer_class.save()
 
 class PreferencjeGet(generics.RetrieveAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjeSerializer
 
-    def get(self, request, pk):
-        preferencje = Preferencje.objects.filter(id=pk)
+    def get(self, request, token):
+        preferencje = Preferencje.objects.filter(token_user_id=token)
         serializer = PreferencjeSerializer(preferencje, many=True)
         return JsonResponse(serializer.data, safe=False)
 
 class PreferencjePut(generics.UpdateAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjeSerializer
+
+class PreferencjePost(generics.ListCreateAPIView):
+    queryset = Preferencje.objects.all()
+    serializer_class = PreferencjePostSerializer
+
+    def perform_create(self, serializer_class):
+        serializer_class.save()
