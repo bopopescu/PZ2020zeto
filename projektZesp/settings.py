@@ -121,11 +121,11 @@ WSGI_APPLICATION = 'projektZesp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'HOST': '213.184.8.199',
+        'HOST': '77.55.237.205',
         'PORT': '3306',
-        'NAME': 'strenkowskip',
-        'USER': 'strenkowskip',
-        'PASSWORD': 'pawel',
+        'NAME': 'projekt_zespolowy',
+        'USER': 'projekt',
+        'PASSWORD': 'teamone',
     }
 }
 
