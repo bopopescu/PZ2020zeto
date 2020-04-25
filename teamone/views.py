@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView
 from rest_framework.decorators import api_view, action
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -121,9 +122,9 @@ class PreferencjePost(generics.ListCreateAPIView):
 
 
 
-class ZwierzeFiltr(View):
+class ZwierzeFiltr(ListView):
 
-    def get(self, request, token):
+    def get(self, request, token, pk):
         if True:
             pref = Preferencje.objects.get(token_user=token)
 
@@ -134,6 +135,7 @@ class ZwierzeFiltr(View):
             # )
 
             zw = Zwierze.objects.filter(
+                id=pk,
                 czyDuzeMieszkanie=pref.czyDuzeMieszkanie,
                 czyDuzoCzasu=pref.czyDuzoCzasu,
                 czyDzieci=pref.czyDzieci
