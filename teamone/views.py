@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
+from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, action
 from rest_framework.views import APIView
@@ -117,3 +118,25 @@ class PreferencjePost(generics.ListCreateAPIView):
 
     def perform_create(self, serializer_class):
         serializer_class.save()
+
+
+
+class ZwierzeFiltr(View):
+
+    def get(self, request, token):
+        if True:
+            pref = Preferencje.objects.get(token_user=token)
+
+            # zw = ZwierzetaLista.objects.filter(
+            #    czyDuzeMieszkanie = Preferencje.objects.values_list('czyDuzeMieszkanie', flat = True).filter(token_user = token),
+            #    czyDuzoCzasu = Preferencje.objects.values_list('czyDuzoCzasu', flat = True).filter(token_user = token),
+            #    czyDzieci = Preferencje.objects.values_list('czyDzieci', flat = True).filter(token_user = token)
+            # )
+
+            zw = Zwierze.objects.filter(
+                czyDuzeMieszkanie=pref.czyDuzeMieszkanie,
+                czyDuzoCzasu=pref.czyDuzoCzasu,
+                czyDzieci=pref.czyDzieci
+            )
+            serializer = ZwierzeSerializer(zw, many=True)
+            return JsonResponse(serializer.data, safe=False)
