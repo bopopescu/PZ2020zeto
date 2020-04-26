@@ -124,7 +124,7 @@ class PreferencjePost(generics.ListCreateAPIView):
 
 class ZwierzeFiltr(ListView):
 
-    def get(self, request, token, pk):
+    def get(self, request, token):
         if True:
             pref = Preferencje.objects.get(token_user=token)
 
@@ -139,10 +139,6 @@ class ZwierzeFiltr(ListView):
                 czyDuzoCzasu=pref.czyDuzoCzasu,
                 czyDzieci=pref.czyDzieci
             )
-            i = 1
-            for z in zw:
-                z.id = i
-                i += 1
             serializer = ZwierzeSerializer(zw, many=True)
             return JsonResponse(serializer.data, safe=False)
 
