@@ -15,6 +15,7 @@ urlpatterns = [
     path('zwierzaki', views.ZwierzetaLista.as_view()),
     path('zwierzaki/<int:pk>', views.ZwierzetaDetail.as_view()),
     path('zfiltr/<str:token>/<int:pk>', views.ZwierzeFiltr.as_view()),
+    path('zfiltr/<str:token>', views.ZwierzeFiltr.as_view()),
     #url(r'^signup/$', views.signup_view, name="signup"),
     #url(r'^login/$', views.login_view, name="login"),
     #url(r'^logout/$', views.logout_view, name="logout"),

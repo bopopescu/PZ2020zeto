@@ -135,10 +135,15 @@ class ZwierzeFiltr(ListView):
             # )
 
             zw = Zwierze.objects.filter(
-                id=pk,
                 czyDuzeMieszkanie=pref.czyDuzeMieszkanie,
                 czyDuzoCzasu=pref.czyDuzoCzasu,
                 czyDzieci=pref.czyDzieci
             )
+            i = 1
+            for z in zw:
+                z.id = i
+                i += 1
             serializer = ZwierzeSerializer(zw, many=True)
             return JsonResponse(serializer.data, safe=False)
+
+
