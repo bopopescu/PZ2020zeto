@@ -165,5 +165,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/home/vnc/myApp/public/imgs/'
+MEDIA_URL = '/imgs/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "imgs")
