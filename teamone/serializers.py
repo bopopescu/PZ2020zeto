@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class SchroniskoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schronisko
-        fields = ['nazwa']
+        fields = '__all__'
 
 class ZwierzeSerializer(serializers.ModelSerializer):
     class Meta:
