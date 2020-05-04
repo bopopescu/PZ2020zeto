@@ -1,23 +1,14 @@
-from django.contrib.auth.decorators import permission_required
-from django.shortcuts import get_object_or_404
-from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
-from rest_framework.decorators import api_view, action
 from rest_framework.parsers import FileUploadParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, generics, permissions
-from .models import  Zwierze, Preferencje
-from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer
+from rest_framework import status, generics
+from .models import Zwierze, Preferencje, Schronisko
+from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer, SchroniskoSerializer
 from django.template import loader
-from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
-from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from teamone.serializers import UserSerializer
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 def index(request):
     template = loader.get_template('index.html')
@@ -153,4 +144,12 @@ class ZwierzeUploadView(APIView):
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class NazwaSchronisko(APIView):
+    def get(self, request):
+        queryset = Schronisko.objects.all()
+        serializer = SchroniskoSerializer(queryset, many=True)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
 
