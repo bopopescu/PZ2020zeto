@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-from .models import Schronisko, Zwierze, Lista, Preferencje
+from .models import Schronisko, Zwierze, Preferencje, BWLista
 from django.contrib.auth.models import User
 
 
@@ -20,7 +20,7 @@ class ZwierzeSerializer(serializers.ModelSerializer):
 
 class ListaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lista
+        model = BWLista
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):

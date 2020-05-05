@@ -24,7 +24,10 @@ urlpatterns = [
     path('PreferencjePut/<str:pk>', views.PreferencjePut.as_view()),
     path('PreferencjePost', views.PreferencjePost.as_view()),
     path('ZwierzeAdd', views.ZwierzeUploadView.as_view()),
-    path('SchroniskoNazwa', views.NazwaSchronisko.as_view())
+    path('SchroniskoNazwa', views.NazwaSchronisko.as_view()),
+    path('WList/<str:token>', views.WList.as_view()),
+    path('BList/<str:token>', views.BList.as_view()),
+    path('BWListPut/<str:token>', views.BWListPut.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

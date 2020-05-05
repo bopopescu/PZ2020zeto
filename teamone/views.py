@@ -3,12 +3,13 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
-from .models import Zwierze, Preferencje, Schronisko
-from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer, SchroniskoSerializer
+from .models import Zwierze, Preferencje, Schronisko, BWLista
+from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer, SchroniskoSerializer, ListaSerializer
 from django.template import loader
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from teamone.serializers import UserSerializer
+from itertools import chain
 
 def index(request):
     template = loader.get_template('index.html')
@@ -151,5 +152,30 @@ class NazwaSchronisko(APIView):
         serializer = SchroniskoSerializer(queryset, many=True)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
+class WList(ListView):
+    def get(self, request, token):
+        lst = BWLista.objects.filter(token_user = token, czyLike = "True")
+        queryset = list()
+        for z in lst.iterator():
+            queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
+        serializer = ZwierzeSerializer(queryset, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
+class BWListPut(generics.ListCreateAPIView):
+    serializer_class = ListaSerializer
 
+    def get(self, request, *args, **kwargs):
+        serializer = ListaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BList(ListView):
+    def get(self, request, token):
+        lst = BWLista.objects.filter(token_user = token, czyLike = "False")
+        queryset = list()
+        for z in lst.iterator():
+            queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
+        serializer = ZwierzeSerializer(queryset, many=True)
+        return JsonResponse(serializer.data, safe=False)

@@ -29,3 +29,7 @@ class Preferencje(models.Model):
     czyDuzoCzasu = models.BooleanField()
     czyDzieci = models.BooleanField()
 
+class BWLista(models.Model):
+    token_user = models.CharField(max_length=100)
+    zwierzeID = models.ForeignKey(Zwierze, on_delete=models.CASCADE)
+    czyLike = models.BooleanField()
