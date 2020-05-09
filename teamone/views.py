@@ -1,3 +1,5 @@
+import token
+
 from django.views.generic import ListView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.views import APIView
@@ -152,14 +154,21 @@ class NazwaSchronisko(APIView):
         serializer = SchroniskoSerializer(queryset, many=True)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
-class WList(ListView):
+class WList(generics.RetrieveAPIView):
+    queryset = BWLista.objects.all()
+    serializer_class = ListaSerializer
+
     def get(self, request, token):
         lst = BWLista.objects.filter(token_user = token, czyLike = "True")
         queryset = list()
         for z in lst.iterator():
             queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
         serializer = ZwierzeSerializer(queryset, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
+
+class WListUpdate(generics.UpdateAPIView):
+    queryset = BWLista.objects.all()
+    serializer_class = ListaSerializer
 
 class BWListPut(generics.ListCreateAPIView):
     serializer_class = ListaSerializer
@@ -178,4 +187,4 @@ class BList(ListView):
         for z in lst.iterator():
             queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
         serializer = ZwierzeSerializer(queryset, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
