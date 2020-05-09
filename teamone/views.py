@@ -166,7 +166,7 @@ class WList(generics.RetrieveAPIView):
         serializer = ZwierzeSerializer(queryset, many=True)
         return Response(serializer.data)
 
-class WListUpdate(generics.UpdateAPIView):
+class WListDelete(generics.DestroyAPIView):
     queryset = BWLista.objects.all()
     serializer_class = ListaSerializer
 
@@ -187,4 +187,4 @@ class BList(ListView):
         for z in lst.iterator():
             queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
         serializer = ZwierzeSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data, safe=False)
