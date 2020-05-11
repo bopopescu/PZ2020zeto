@@ -134,7 +134,13 @@ class ZwierzeFiltr(ListView):
                 czyDuzoCzasu=pref.czyDuzoCzasu,
                 czyDzieci=pref.czyDzieci
             )
-            serializer = ZwierzeSerializer(zw, many=True)
+            zww = list()
+            for c in zw.iterator():
+                wyswietlony = BWLista.objects.filter(token_user=token, zwierzeID_id=c.id).count()
+                if wyswietlony == 0:
+                    zww += Zwierze.objects.filter(id=c.id)
+            serializer = ZwierzeSerializer(zww, many=True)
+
             return JsonResponse(serializer.data, safe=False)
 
 class ZwierzeUploadView(APIView):
