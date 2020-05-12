@@ -172,9 +172,14 @@ class WList(generics.RetrieveAPIView):
         serializer = ZwierzeSerializer(queryset, many=True)
         return Response(serializer.data)
 
-class WListDelete(generics.DestroyAPIView):
+class WListDelete(APIView):
     queryset = BWLista.objects.all()
     serializer_class = ListaSerializer
+
+    def delete(self, request, pk, token):
+        zw = BWLista.objects.get(zwierzeID_id=pk, token_user = token)
+        zw.delete()
+        return HttpResponse('yay')
 
 class BWListPut(generics.ListCreateAPIView):
     serializer_class = ListaSerializer
