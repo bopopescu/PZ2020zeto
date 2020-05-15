@@ -27,15 +27,9 @@ class ZwierzetaLista(generics.ListAPIView):
         serializer = ZwierzeSerializer(zw, many = True)
         return JsonResponse(serializer.data, safe = False)
 
-class ZwierzetaDetail(generics.RetrieveAPIView):
+class ZwierzetaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Zwierze.objects.all()
-    serializerClass = ZwierzeSerializer
-
-    def get(self, request, pk):
-        zwierzak = Zwierze.objects.filter(id=pk)
-        serializer = ZwierzeSerializer(zwierzak, many=True)
-        return JsonResponse(serializer.data, safe = False)
-
+    serializer_class = ZwierzeSerializer
 
 class ZwierzetaFiltry(generics.ListAPIView):
     queryset = Zwierze.objects.all()
@@ -179,7 +173,7 @@ class WListDelete(APIView):
     def delete(self, request, pk, token):
         zw = BWLista.objects.get(zwierzeID_id=pk, token_user = token)
         zw.delete()
-        return HttpResponse('yay')
+        return HttpResponse('yay', status=status.HTTP_200_OK)
 
 class BWListPut(generics.ListCreateAPIView):
     serializer_class = ListaSerializer
