@@ -1,6 +1,7 @@
 import token
 
 from django.views.generic import ListView
+from rest_framework.authtoken.models import Token
 from rest_framework.parsers import FileUploadParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -193,3 +194,12 @@ class BList(ListView):
             queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
         serializer = ZwierzeSerializer(queryset, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+class Superuser(APIView):
+    def get(self, request, token):
+        user_id = Token.objects.get(key=token)
+        czy_superuser = User.objects.get(id=user_id.user_id)
+        serializer=UserSerializer(czy_superuser)
+        return JsonResponse(serializer.data, safe=False)
+        #serializer=UserSerializer(czy_superuser)
+        #return Response(serializer.data)

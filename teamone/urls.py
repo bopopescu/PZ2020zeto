@@ -28,7 +28,8 @@ urlpatterns = [
     path('WList/<str:token>', views.WList.as_view()),
     path('BList/<str:token>', views.BList.as_view()),
     path('BWListPut/<str:token>', views.BWListPut.as_view()),
-    path('WListDelete/<str:token>/<int:pk>', views.WListDelete.as_view())
+    path('WListDelete/<str:token>/<int:pk>', views.WListDelete.as_view()),
+    path('SuperUser/<str:token>', views.Superuser.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -13,7 +13,7 @@ class Zwierze(models.Model):
     schroniskoID = models.ForeignKey(Schronisko, on_delete=models.CASCADE)
     nazwa = models.CharField(max_length=30)
     gatunek = models.CharField(max_length=30)
-    zdjecie = models.FileField(blank=False, null=False)
+    zdjecie = models.FileField(blank=False, null=True)
     opis = models.CharField(max_length=200)
     czyDuzeMieszkanie = models.BooleanField()
     czyDuzoCzasu = models.BooleanField()
