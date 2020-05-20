@@ -1,5 +1,3 @@
-import token
-
 from django.views.generic import ListView
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import FileUploadParser
@@ -12,7 +10,6 @@ from django.template import loader
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from teamone.serializers import UserSerializer
-from itertools import chain
 
 def index(request):
     template = loader.get_template('index.html')
@@ -196,10 +193,35 @@ class BList(ListView):
         return JsonResponse(serializer.data, safe=False)
 
 class Superuser(APIView):
-    def get(self, request, token):
+    def get(self, token):
         user_id = Token.objects.get(key=token)
         czy_superuser = User.objects.get(id=user_id.user_id)
         serializer=UserSerializer(czy_superuser)
         return JsonResponse(serializer.data, safe=False)
-        #serializer=UserSerializer(czy_superuser)
-        #return Response(serializer.data)
+
+class AddSchronisko(APIView):
+    def post(self, request):
+        serializer = SchroniskoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UpdateSchronisko(generics.RetrieveUpdateAPIView):
+    queryset = Schronisko.objects.all()
+    serializer_class = SchroniskoSerializer
+
+class DeleteSchronisko(generics.RetrieveAPIView):
+    queryset = Schronisko.objects.all()
+    serializer_class = SchroniskoSerializer
+
+    def delete(self, request, pk):
+        schronisko = Schronisko.objects.get(id=pk)
+        serializer = SchroniskoSerializer(schronisko)
+        schronisko.delete()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class DeleteUser(generics.RetrieveDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

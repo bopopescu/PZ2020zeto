@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_auth.registration',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 SITE_ID = 1

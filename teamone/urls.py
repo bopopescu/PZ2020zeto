@@ -29,7 +29,11 @@ urlpatterns = [
     path('BList/<str:token>', views.BList.as_view()),
     path('BWListPut/<str:token>', views.BWListPut.as_view()),
     path('WListDelete/<str:token>/<int:pk>', views.WListDelete.as_view()),
-    path('SuperUser/<str:token>', views.Superuser.as_view())
+    path('SuperUser/<str:token>', views.Superuser.as_view()),
+    path('SchroniskoAdd', views.AddSchronisko.as_view()),
+    path('SchroniskoUpdate/<int:pk>', views.UpdateSchronisko.as_view()),
+    path('SchroniskoDelete/<int:pk>', views.DeleteSchronisko.as_view()),
+    path('UserDelete/<int:pk>', views.DeleteUser.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
