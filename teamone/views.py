@@ -3,7 +3,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.parsers import FileUploadParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from .models import Zwierze, Preferencje, Schronisko, BWLista
 from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer, SchroniskoSerializer, ListaSerializer
 from django.template import loader
@@ -14,7 +14,6 @@ from teamone.serializers import UserSerializer
 def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
-
 
 class ZwierzetaLista(generics.ListAPIView):
     queryset = Zwierze.objects.all()
@@ -193,7 +192,8 @@ class BList(ListView):
         return JsonResponse(serializer.data, safe=False)
 
 class Superuser(APIView):
-    def get(self, token):
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, token):
         user_id = Token.objects.get(key=token)
         czy_superuser = User.objects.get(id=user_id.user_id)
         serializer=UserSerializer(czy_superuser)
@@ -211,6 +211,7 @@ class AddSchronisko(APIView):
 class UpdateSchronisko(generics.RetrieveUpdateAPIView):
     queryset = Schronisko.objects.all()
     serializer_class = SchroniskoSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 class DeleteSchronisko(generics.RetrieveAPIView):
     queryset = Schronisko.objects.all()
