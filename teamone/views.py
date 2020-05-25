@@ -145,7 +145,7 @@ class ZwierzeUploadView(APIView):
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class NazwaSchronisko(APIView):
+class NazwaSchronisko(ListView):
     def get(self, request):
         queryset = Schronisko.objects.all()
         serializer = SchroniskoSerializer(queryset, many=True)

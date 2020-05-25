@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 User = get_user_model()
 
 class Schronisko(models.Model):
-    userID = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    token = models.CharField(max_length=100, primary_key=True)
     nazwa = models.CharField(max_length=30, null=False)
     telefon = models.CharField(max_length=15)
     adres = models.CharField(max_length=30)
