@@ -31,7 +31,7 @@ urlpatterns = [
     path('WListDelete/<str:token>/<int:pk>', views.WListDelete.as_view()),
     path('SuperUser/<str:token>', views.Superuser.as_view()),
     path('SchroniskoAdd', views.AddSchronisko.as_view()),
-    path('SchroniskoUpdate/<str:pk>', views.UpdateSchronisko.as_view()),
+    path('SchroniskoUpdate/<str:token>', views.UpdateSchronisko.as_view()),
     path('SchroniskoDelete/<str:pk>', views.DeleteSchronisko.as_view()),
     path('UserDelete/<int:pk>', views.DeleteUser.as_view())
 ]
