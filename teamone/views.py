@@ -211,7 +211,6 @@ class AddSchronisko(APIView):
 class UpdateSchronisko(generics.RetrieveUpdateAPIView):
     queryset = Schronisko.objects.all()
     serializer_class = SchroniskoSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 class DeleteSchronisko(generics.RetrieveAPIView):
     queryset = Schronisko.objects.all()
