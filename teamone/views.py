@@ -7,7 +7,7 @@ from rest_framework import status, generics, permissions
 from .models import Zwierze, Preferencje, Schronisko, BWLista
 from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer, SchroniskoSerializer, ListaSerializer
 from django.template import loader
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from teamone.serializers import UserSerializer
 
@@ -20,9 +20,11 @@ class ZwierzetaLista(generics.ListAPIView):
     serializerClass = ZwierzeSerializer
 
     def get(self, request):
-        zw = Zwierze.objects.all()
-        serializer = ZwierzeSerializer(zw, many = True)
-        return JsonResponse(serializer.data, safe = False)
+        if request.user.is_authenticated:
+            zw = Zwierze.objects.all()
+            serializer = ZwierzeSerializer(zw, many=True)
+            return JsonResponse(serializer.data, safe=False)
+        return HttpResponseForbidden()
 
 class ZwierzetaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Zwierze.objects.all()
