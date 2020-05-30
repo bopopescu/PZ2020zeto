@@ -223,6 +223,11 @@ class DeleteSchronisko(generics.RetrieveAPIView):
         user.delete()
         return Response(status=status.HTTP_200_OK)
 
+    def deletepref(self, token):
+        pref = Preferencje.objects.get(token_user=token)
+        pref.delete()
+        return Response(status=status.HTTP_200_OK)
+
     def delete(self, request, pk):
         schronisko = Schronisko.objects.get(token=pk)
         serializer = SchroniskoSerializer(schronisko)
@@ -230,6 +235,7 @@ class DeleteSchronisko(generics.RetrieveAPIView):
         userid = Token.objects.get(key=pk)
         userid2 = userid.user_id
         self.deleteuser(userid2)
+        self.deletepref(pk)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
