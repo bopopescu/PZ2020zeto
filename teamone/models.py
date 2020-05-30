@@ -31,6 +31,6 @@ class Preferencje(models.Model):
     czyDzieci = models.BooleanField()
 
 class BWLista(models.Model):
-    token_user = models.CharField(max_length=100)
+    token_user = models.ForeignKey(Token, on_delete=models.CASCADE)
     zwierzeID = models.ForeignKey(Zwierze, on_delete=models.CASCADE)
     czyLike = models.BooleanField()

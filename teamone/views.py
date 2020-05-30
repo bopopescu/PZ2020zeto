@@ -129,7 +129,7 @@ class ZwierzeFiltr(ListView):
             )
             zww = list()
             for c in zw.iterator():
-                wyswietlony = BWLista.objects.filter(token_user=token, zwierzeID_id=c.id).count()
+                wyswietlony = BWLista.objects.filter(token_user_id=token, zwierzeID_id=c.id).count()
                 if wyswietlony == 0:
                     zww += Zwierze.objects.filter(id=c.id)
             serializer = ZwierzeSerializer(zww, many=True)
@@ -158,7 +158,7 @@ class WList(generics.RetrieveAPIView):
     serializer_class = ListaSerializer
 
     def get(self, request, token):
-        lst = BWLista.objects.filter(token_user = token, czyLike = "True")
+        lst = BWLista.objects.filter(token_user_id = token, czyLike = "True")
         queryset = list()
         for z in lst.iterator():
             queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
@@ -170,7 +170,7 @@ class WListDelete(APIView):
     serializer_class = ListaSerializer
 
     def delete(self, request, pk, token):
-        zw = BWLista.objects.get(zwierzeID_id=pk, token_user = token)
+        zw = BWLista.objects.get(zwierzeID_id=pk, token_user_id = token)
         zw.delete()
         return HttpResponse('yay', status=status.HTTP_200_OK)
 
@@ -186,7 +186,7 @@ class BWListPut(generics.ListCreateAPIView):
 
 class BList(ListView):
     def get(self, request, token):
-        lst = BWLista.objects.filter(token_user = token, czyLike = "False")
+        lst = BWLista.objects.filter(token_user_id = token, czyLike = "False")
         queryset = list()
         for z in lst.iterator():
             queryset += Zwierze.objects.filter(id=z.zwierzeID.id)   #działa, nie zastanawiaj się ;_;
@@ -194,7 +194,7 @@ class BList(ListView):
         return JsonResponse(serializer.data, safe=False)
 
 class Superuser(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
     def get(self, request, token):
         user_id = Token.objects.get(key=token)
         czy_superuser = User.objects.get(id=user_id.user_id)
@@ -218,11 +218,21 @@ class DeleteSchronisko(generics.RetrieveAPIView):
     queryset = Schronisko.objects.all()
     serializer_class = SchroniskoSerializer
 
+    def deleteuser(self, pk):
+        user = User.objects.get(id=pk)
+        user.delete()
+        return Response(status=status.HTTP_200_OK)
+
     def delete(self, request, pk):
-        schronisko = Schronisko.objects.get(id=pk)
+        schronisko = Schronisko.objects.get(token=pk)
         serializer = SchroniskoSerializer(schronisko)
         schronisko.delete()
+        userid = Token.objects.get(key=pk)
+        userid2 = userid.user_id
+        self.deleteuser(userid2)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 class DeleteUser(generics.RetrieveDestroyAPIView):
     queryset = User.objects.all()
