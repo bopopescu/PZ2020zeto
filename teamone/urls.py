@@ -33,7 +33,10 @@ urlpatterns = [
     path('SchroniskoAdd', views.AddSchronisko.as_view()),
     path('SchroniskoUpdate/<str:pk>', views.UpdateSchronisko.as_view()),
     path('SchroniskoDelete/<str:pk>', views.DeleteSchronisko.as_view()),
-    path('UserDelete/<int:pk>', views.DeleteUser.as_view())
+    path('UserDelete/<int:pk>', views.DeleteUser.as_view()),
+    path('ZSGet/<str:token>', views.ZwierzSchronGet.as_view()),
+    path('ZSDelete/<str:token>/<int:pk>', views.ZwierzSchronDelete.as_view()),
+    path('ZSUpdate/<str:token>/<int:pk>', views.ZwierzSchronUpdate.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

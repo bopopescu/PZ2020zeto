@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.views.generic import ListView
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import FileUploadParser
@@ -238,8 +239,23 @@ class DeleteSchronisko(generics.RetrieveAPIView):
         self.deletepref(pk)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-
 class DeleteUser(generics.RetrieveDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class ZwierzSchronGet(ListView):
+    def get(self, request, token):
+        queryset = Zwierze.objects.filter(schroniskoID_id=token)
+        serializer = ZwierzeSerializer(queryset,many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+class ZwierzSchronDelete(APIView):
+    def delete(self, request, token, pk):
+        queryset = Zwierze.objects.get(schroniskoID_id=token, id=pk)
+        queryset.delete()
+        return HttpResponse('yay', status=status.HTTP_200_OK)
+
+class ZwierzSchronUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Zwierze.objects.all()
+    serializer_class = ZwierzeSerializer
