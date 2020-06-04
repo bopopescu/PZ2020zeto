@@ -21,11 +21,9 @@ class ZwierzetaLista(generics.ListAPIView):
     serializerClass = ZwierzeSerializer
 
     def get(self, request):
-        if request.user.is_authenticated:
-            zw = Zwierze.objects.all()
-            serializer = ZwierzeSerializer(zw, many=True)
-            return JsonResponse(serializer.data, safe=False)
-        return HttpResponseForbidden()
+        zw = Zwierze.objects.all()
+        serializer = ZwierzeSerializer(zw, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 class ZwierzetaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Zwierze.objects.all()
