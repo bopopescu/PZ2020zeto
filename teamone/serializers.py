@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
-
 from .models import Schronisko, Zwierze, Preferencje, BWLista
 from django.contrib.auth.models import User
 

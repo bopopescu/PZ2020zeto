@@ -1,21 +1,16 @@
-from django.shortcuts import render
 from django.views.generic import ListView
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import FileUploadParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, generics, permissions
+from rest_framework import status, generics
 from .models import Zwierze, Preferencje, Schronisko, BWLista
 from .serializers import ZwierzeSerializer, PreferencjeSerializer, PreferencjePostSerializer, SchroniskoSerializer, ListaSerializer
-from django.template import loader
-from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from teamone.serializers import UserSerializer
 
-def index(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render({}, request))
-
+#Paweł
 class ZwierzetaLista(generics.ListAPIView):
     queryset = Zwierze.objects.all()
     serializerClass = ZwierzeSerializer
@@ -25,53 +20,12 @@ class ZwierzetaLista(generics.ListAPIView):
         serializer = ZwierzeSerializer(zw, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+#Adrian
 class ZwierzetaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Zwierze.objects.all()
     serializer_class = ZwierzeSerializer
 
-class ZwierzetaFiltry(generics.ListAPIView):
-    queryset = Zwierze.objects.all()
-    serializer_class = ZwierzeSerializer
-
-    def get(self, request, filtr):
-        if(filtr[0] == '1'):
-            lista = Zwierze.objects.filter(czyDuzeMieszkanie=filtr[1], czyDuzoCzasu=filtr[2], czyDzieci=filtr[3])
-        else:
-            lista = Zwierze.objects.all()
-        serializer = ZwierzeSerializer(lista, many = True)
-        return JsonResponse(serializer.data, safe = False)
-
-"""
-@csrf_exempt
-def signup_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('http://77.55.237.205:8000/login/')
-    else:
-        form = UserCreationForm()
-    return render(request, "signup.html", {'form': form})
-
-@csrf_exempt
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect("http://77.55.237.205:8100/page/main")
-    else:
-        form = AuthenticationForm()
-    return render(request, "login.html", {"form" : form})
-
-@csrf_exempt
-def logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('http://77.55.237.205:8000/login/')
-"""
-
+#Adrian
 class NameView(generics.RetrieveAPIView):
     queryset = Zwierze.objects.all()
     serializer_class = UserSerializer
@@ -81,12 +35,14 @@ class NameView(generics.RetrieveAPIView):
         serializer = UserSerializer(user, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+#Adrian
 class ZwierzePost(generics.ListCreateAPIView):
     queryset = Zwierze.objects.all()
     serializer_class = ZwierzeSerializer
     def perform_create(self, serializer_class):
         serializer_class.save()
 
+#Adrian
 class PreferencjeGet(generics.RetrieveAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjeSerializer
@@ -96,10 +52,12 @@ class PreferencjeGet(generics.RetrieveAPIView):
         serializer = PreferencjeSerializer(preferencje, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+#Adrian
 class PreferencjePut(generics.UpdateAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjeSerializer
 
+#Adrian
 class PreferencjePost(generics.ListCreateAPIView):
     queryset = Preferencje.objects.all()
     serializer_class = PreferencjePostSerializer
@@ -107,20 +65,12 @@ class PreferencjePost(generics.ListCreateAPIView):
     def perform_create(self, serializer_class):
         serializer_class.save()
 
-
-
+#Paweł
 class ZwierzeFiltr(ListView):
 
     def get(self, request, token):
         if True:
             pref = Preferencje.objects.get(token_user=token)
-
-            # zw = ZwierzetaLista.objects.filter(
-            #    czyDuzeMieszkanie = Preferencje.objects.values_list('czyDuzeMieszkanie', flat = True).filter(token_user = token),
-            #    czyDuzoCzasu = Preferencje.objects.values_list('czyDuzoCzasu', flat = True).filter(token_user = token),
-            #    czyDzieci = Preferencje.objects.values_list('czyDzieci', flat = True).filter(token_user = token)
-            # )
-
             zw = Zwierze.objects.filter(
                 czyDuzeMieszkanie=pref.czyDuzeMieszkanie,
                 czyDuzoCzasu=pref.czyDuzoCzasu,
@@ -132,9 +82,9 @@ class ZwierzeFiltr(ListView):
                 if wyswietlony == 0:
                     zww += Zwierze.objects.filter(id=c.id)
             serializer = ZwierzeSerializer(zww, many=True)
-
             return JsonResponse(serializer.data, safe=False)
 
+#Adrian
 class ZwierzeUploadView(APIView):
     parser_class = (FileUploadParser,)
 
@@ -146,12 +96,14 @@ class ZwierzeUploadView(APIView):
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#Adrian
 class NazwaSchronisko(ListView):
     def get(self, request):
         queryset = Schronisko.objects.all()
         serializer = SchroniskoSerializer(queryset, many=True)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
+#Paweł
 class WList(generics.RetrieveAPIView):
     queryset = BWLista.objects.all()
     serializer_class = ListaSerializer
@@ -164,6 +116,7 @@ class WList(generics.RetrieveAPIView):
         serializer = ZwierzeSerializer(queryset, many=True)
         return Response(serializer.data)
 
+#Paweł
 class WListDelete(APIView):
     queryset = BWLista.objects.all()
     serializer_class = ListaSerializer
@@ -173,6 +126,7 @@ class WListDelete(APIView):
         zw.delete()
         return HttpResponse('yay', status=status.HTTP_200_OK)
 
+#Paweł
 class BWListPut(generics.ListCreateAPIView):
     serializer_class = ListaSerializer
 
@@ -183,6 +137,7 @@ class BWListPut(generics.ListCreateAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#Paweł
 class BList(ListView):
     def get(self, request, token):
         lst = BWLista.objects.filter(token_user_id = token, czyLike = "False")
@@ -192,14 +147,15 @@ class BList(ListView):
         serializer = ZwierzeSerializer(queryset, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+#Adrian
 class Superuser(APIView):
-    #permission_classes = [permissions.IsAuthenticated]
     def get(self, request, token):
         user_id = Token.objects.get(key=token)
         czy_superuser = User.objects.get(id=user_id.user_id)
         serializer=UserSerializer(czy_superuser)
         return JsonResponse(serializer.data, safe=False)
 
+#Adrian
 class AddSchronisko(APIView):
     def post(self, request):
         serializer = SchroniskoSerializer(data=request.data)
@@ -209,10 +165,12 @@ class AddSchronisko(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#Adrian
 class UpdateSchronisko(generics.RetrieveUpdateAPIView):
     queryset = Schronisko.objects.all()
     serializer_class = SchroniskoSerializer
 
+#Paweł
 class DeleteSchronisko(generics.RetrieveAPIView):
     queryset = Schronisko.objects.all()
     serializer_class = SchroniskoSerializer
@@ -237,23 +195,26 @@ class DeleteSchronisko(generics.RetrieveAPIView):
         self.deletepref(pk)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+#Adrian
 class DeleteUser(generics.RetrieveDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
+#Adrian
 class ZwierzSchronGet(ListView):
     def get(self, request, token):
         queryset = Zwierze.objects.filter(schroniskoID_id=token)
         serializer = ZwierzeSerializer(queryset,many=True)
         return JsonResponse(serializer.data, safe=False)
 
+#Adrian
 class ZwierzSchronDelete(APIView):
     def delete(self, request, token, pk):
         queryset = Zwierze.objects.get(schroniskoID_id=token, id=pk)
         queryset.delete()
         return HttpResponse('yay', status=status.HTTP_200_OK)
 
+#Adrian
 class ZwierzSchronUpdate(generics.RetrieveUpdateAPIView):
     queryset = Zwierze.objects.all()
     serializer_class = ZwierzeSerializer
