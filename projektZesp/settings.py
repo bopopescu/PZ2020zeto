@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cqi!_f$z29&d42-kq^2*u7t6h+_1rvb5z__g-_3f(h&jtw#_nq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['192.168.8.200', '0.0.0.0', '127.0.0.1','pitunnel.com']
 ALLOWED_HOSTS = ['77.55.237.205', '0.0.0.0', '127.0.0.1']

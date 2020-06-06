@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from teamone import views
 from rest_framework.urlpatterns import format_suffix_patterns
@@ -23,7 +23,7 @@ urlpatterns = [
     path('BWListPut/<str:token>', views.BWListPut.as_view()),
     path('WListDelete/<str:token>/<int:pk>', views.WListDelete.as_view()),
     path('SuperUser/<str:token>', views.Superuser.as_view()),
-    path('SchroniskoAdd', views.AddSchronisko.as_view()),
+    path('SchroniskoAdd/<str:name>', views.AddSchronisko.as_view()),
     path('SchroniskoUpdate/<str:pk>', views.UpdateSchronisko.as_view()),
     path('SchroniskoDelete/<str:pk>', views.DeleteSchronisko.as_view()),
     path('UserDelete/<int:pk>', views.DeleteUser.as_view()),

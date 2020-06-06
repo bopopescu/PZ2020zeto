@@ -157,10 +157,11 @@ class Superuser(APIView):
 
 #Adrian
 class AddSchronisko(APIView):
-    def post(self, request):
+    def post(self, request, name):
         serializer = SchroniskoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            superuser = User.objects.filter(username=name).update(is_staff=1)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
